@@ -19,6 +19,8 @@ int shmClockId;
 int shmMsgId;
 void* shmClockAddress;
 void* shmMsgAddress;
+void deallocateMemory();
+void checkForErrors(char programName[], int errnoValue);
 
 int main(int argc, char *argv[]){
   int maxRunTime = 2;
@@ -65,6 +67,7 @@ while ((option = getopt(argc, argv, "hslt")) != -1) {
      break;
   }
 }
+printf("It works?!\n" );
 // set to default
 if (maxProcesses == -1) {
   maxProcesses = 5;
@@ -73,13 +76,17 @@ if (maxProcesses == -1) {
 key_t shmClockKey = ftok("./CreateKeyFile", 1);
 key_t shmMsgKey = ftok("./CreateKeyFile", 2);
 key_t semKey = ftok("./CreateKeyFile", 3);
+checkForErrors(argv[0], errno);
+
+
 
 shmClockId = shmget(shmClockKey, sizeof(int) * 2, IPC_CREAT | 0644);
 shmMsgId= shmget(shmMsgKey, sizeof(int) * 3, IPC_CREAT | 0644);
-
+checkForErrors(argv[0], errno);
 
 shmMsgAddress = shmat(shmClockId, (void*)0, 0);
 shmClockAddress = shmat(shmMsgId, (void*)0, 0);
+checkForErrors(argv[0], errno);
 
 // setup clock
 int* shmClock = shmClockAddress;
@@ -88,6 +95,20 @@ int* shmMsg   = shmMsgAddress;
 shmClock[0] = 0, shmClock[1] = 0; //subscript 0 -> seconds, subscript 1 -> nanoseconds
 shmMsg[0] = -1, shmMsg[1] = -1, shmMsg[2] = -2; //subscript 0 -> seconds, subscript 1 -> nanoseconds, subscript 2 -> PID
 
+deallocateMemory();
+}
 
+void checkForErrors(char programName[], int errnoValue){
+  if (errnoValue) {
+    fprintf(stderr, "%s: Error: %s\n", programName, strerror(errno));
+    deallocateMemory();
+    exit (1);
+  }
+}
 
+void deallocateMemory() {
+  if (shmClockId)
+    shmctl(shmClockId, IPC_RMID, NULL);
+  if (shmMsgId)
+    shmctl(shmMsgId, IPC_RMID, NULL);
 }
