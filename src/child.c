@@ -9,6 +9,8 @@
 #include <errno.h>
 #include <signal.h>
 #include "validation.h"
+#include <unistd.h>
+
 
 //Shared Memory
 int shmClockId;
