@@ -11,6 +11,7 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <semaphore.h>
+#include <unistd.h>
 #include "validation.h"
 
 
@@ -80,6 +81,9 @@ if (maxProcesses == -1) {
 if (maxRunTime == -1){
   maxRunTime = 2;
 }
+if (logFilePointer == NULL){
+  printUsageMsg(argv[0], 1);
+} 
 alarm(maxRunTime);
 printf("maxProcesses: %d\n", maxProcesses);
 // create keys

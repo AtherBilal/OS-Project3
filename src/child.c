@@ -24,11 +24,14 @@ void deallocateMemory();
 void closeFilePointers();
 void exitCleanUp();
 long convertToNanoSeconds(int clockArray[]);
+void handleCtrlC();
+void timeOutExit();
+
 
 int main(int argc, char *argv[]){
   //Signal Handling
-  // signal(SIGINT, exitSIGINT);
-  // signal(SIGTERM, exitSIGTERM);
+  signal(SIGINT, handleCtrlC);
+  signal(SIGTERM, timeOutExit);
 
   randomNumberFP = fopen("/dev/urandom", "r");
   checkForErrors(argv[0], errno);
@@ -133,7 +136,6 @@ void deallocateMemory() {
   shmdt(shmClockAddress);
 // if(shmMsgAddress)
   shmdt(shmMsgAddress);
-  printf("done detaching\n");
 }
 
 
@@ -141,4 +143,19 @@ void closeFilePointers() {
   if (randomNumberFP) {
     fclose(randomNumberFP);
   }
+}
+
+
+void handleCtrlC() {
+  fprintf(stderr, "PID: %ld interrupted by signal. Exitting!\n", (long)getpid());
+  closeFilePointers();
+  deallocateMemory();
+  exit(1);
+}
+
+void timeOutExit() {
+  fprintf(stderr, "PID: %ld timing out because of signal from master\n", (long)getpid());
+  closeFilePointers();
+  deallocateMemory();
+  exit(1);
 }
