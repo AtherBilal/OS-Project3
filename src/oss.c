@@ -173,8 +173,9 @@ for (int i = 0; i < maxProcesses; i++) {
     }
   }
 // wait(NULL);
-fprintf(stderr,"Master process exiting due to timeout. Killing children processes\n");
+fprintf(stderr,"Master process exiting due to getting to 2 seconds in simulated clock. Killing children processes\n");
 cleanUpExit();
+exit(0);
 }
 
 void cleanUpExit(){
@@ -224,7 +225,6 @@ void timeoutKillAll()
   closeFilePointers();
   kill(0, SIGTERM);
   exit(1);
-
 }
 
 
