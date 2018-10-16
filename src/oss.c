@@ -12,6 +12,7 @@
 #include <fcntl.h>
 #include <semaphore.h>
 #include <unistd.h>
+#include <sys/wait.h>
 #include "validation.h"
 
 
