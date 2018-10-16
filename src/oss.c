@@ -148,7 +148,6 @@ for (int i = 0; i < maxProcesses; i++) {
     if (shmClock[1] > 1000000000) {
       shmClock[0]++;
       shmClock[1] = shmClock[1] % 1000000000;
-      fprintf(stderr, "INCREMENTED SECONDS\n");
     }
     //Spawn processes up until max processes are in use
     while (runningProcessCount < maxProcesses) {
@@ -181,7 +180,9 @@ for (int i = 0; i < maxProcesses; i++) {
   }
 // wait(NULL);
 fprintf(stderr,"Master process exiting due to getting to 2 seconds in simulated clock. Killing children processes\n");
+closeFilePointers();
 cleanUpExit();
+kill(0, SIGTERM);
 exit(0);
 }
 
@@ -219,18 +220,18 @@ void deallocateMemory() {
 }
 
 void handleCtrlC() {
-  deallocateMemory();
   fprintf(stderr,"Master process exiting due to exit signal. Killing children processes\n");
   kill(0, SIGINT);
+  deallocateMemory();
   exit(1);
 }
 
 void timeoutKillAll()
 {
   fprintf(stderr,"Master process exiting due to timeout. Killing children processes\n");
+  kill(0, SIGTERM);
   deallocateMemory();
   closeFilePointers();
-  kill(0, SIGTERM);
   exit(1);
 }
 

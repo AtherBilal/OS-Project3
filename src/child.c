@@ -99,7 +99,7 @@ int main(int argc, char *argv[]){
     sop.sem_op = 1; 
     semop(semID, &sop, 1);
   }
-  deallocateMemory();
+  exitCleanUp();
 }
 
 void exitCleanUp() {
@@ -135,9 +135,9 @@ void checkForErrors(char programName[], int errnoValue){
 }
 
 void deallocateMemory() {
-// if(shmClockAddress)
+if(shmClockAddress)
   shmdt(shmClockAddress);
-// if(shmMsgAddress)
+if(shmMsgAddress)
   shmdt(shmMsgAddress);
 }
 
