@@ -1,0 +1,13 @@
+The user process is "child" instead of "user".
+
+To run this program in the root directory run the following commands
+
+```
+make
+cd bin
+./oss -s X -l Y -t Z
+```
+Where X is the max processes to be run at any time (Defaul)
+Where Y is the path to the log file. (must be readable)
+Where Z is the number of seconds to time the process out
+
