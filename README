@@ -13,3 +13,9 @@ Where Z is the number of seconds to time the process out
 
 to see commits you can run 
 `cat .gitlog`
+
+
+NOTE: There is an issue at the end where the there is an error from the child 
+`child: Error: Invalid argument`
+This is caused by a bug where (I suspect) the shared memory is being deallocated from master before the child is able to detach from it.
+Also for a similar reason the last child may be orphaned as a result. 
