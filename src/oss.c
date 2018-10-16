@@ -27,7 +27,9 @@ void* shmMsgAddress;
 int maxRunTime = -1;
 //Semaphore
 int semID;
-
+union semun {
+    int val;
+};
 void handleCtrlC();
 void closeFilePointers();
 void deallocateMemory();
