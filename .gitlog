@@ -1,0 +1,12 @@
+* 1b5edfc : added proper termination
+* 74e6137 : added yet another library for hoare
+* a4f02a3 : added libarary for hoare
+* c0ba33b : Added semun declartion
+* cfe16e5 : added include statements for hoare
+* d9b5536 : added checking for log file
+* c4bbf55 : added exit I/O command
+* 0a8c298 : Added README
+* 7ff0fe4 : added rest of features
+* 6846f68 : added error checking
+* 7cdd92a : added shared memory setup
+* 0efe08a : first commit
